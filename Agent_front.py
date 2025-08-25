@@ -128,29 +128,59 @@ st.markdown("""
   font-size: .85rem;
 }
 
-/* Chat input — hard center and width control; no overhang */
+/* Chat input — auto-adapt to Streamlit light/dark */
 [data-testid="stChatInput"] {
   max-width: 840px !important;
   margin: 8px auto 12px auto !important;
 }
+
+/* Wrapper (the visible input container) */
 [data-testid="stChatInput"] > div {
   max-width: 840px !important;
   margin: 0 auto !important;
-  border: 1px solid rgba(0,0,0,.25) !important;   /* darker border for light mode */
+
+  /* Use Streamlit theme variables with sensible fallbacks */
+  background: var(--background-color, #ffffff) !important;
+  border: 1px solid var(--secondary-background-color, #d0d5dd) !important;
   border-radius: 12px !important;
   box-shadow: none !important;
-  background: #ffffff !important;                 /* force white background */
 }
+
+/* Actual textarea */
 [data-testid="stChatInput"] textarea {
-  color: #000000 !important;                      /* black text for visibility */
-  background: #ffffff !important;                 /* white bg */
+  color: var(--text-color, #111111) !important;
+  background: var(--background-color, #ffffff) !important;
   box-shadow: none !important;
   outline: none !important;
 }
-[data-testid="stChatInput"] > div:focus-within {
-  border-color: rgba(59,130,246,.50) !important;
-  box-shadow: 0 0 0 2px rgba(59,130,246,.18) !important;
+
+/* Placeholder text */
+[data-testid="stChatInput"] textarea::placeholder {
+  /* Slightly muted versus normal text */
+  color: color-mix(in srgb, var(--text-color, #111111) 55%, transparent) !important;
 }
+
+/* Focus outline uses theme primary color */
+[data-testid="stChatInput"] > div:focus-within {
+  border-color: var(--primary-color, #3b82f6) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color, #3b82f6) 28%, transparent) !important;
+}
+
+/* Fallback for environments where theme vars aren't injected */
+@media (prefers-color-scheme: dark) {
+  [data-testid="stChatInput"] > div {
+    background: #0e1117 !important;
+    border-color: #2b2f36 !important;
+  }
+  [data-testid="stChatInput"] textarea {
+    color: #ffffff !important;
+    background: #0e1117 !important;
+  }
+  [data-testid="stChatInput"] textarea::placeholder {
+    color: #9aa4b2 !important;
+  }
+}
+
 
 
 /* Tiny hint on top-left */
