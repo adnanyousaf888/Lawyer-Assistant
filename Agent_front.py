@@ -75,30 +75,15 @@ st.markdown("""
   line-height: 1.38;               /* single rhythm for all text inside bubbles */
 }
 
-/* Paragraphs: spacing only, no left padding */
 .bubble-user p,
-.bubble-assistant p {
-  margin: 0.40rem 0;
-  padding-left: 0;                 /* remove indent on <p> */
-}
-
-/* Lists: add the indent */
+.bubble-assistant p,
 .bubble-user ul,
 .bubble-assistant ul,
 .bubble-user ol,
 .bubble-assistant ol {
-  margin: 0.40rem 0;
-  padding-left: 1.25rem;           /* indent lists only */
-  list-style-position: outside;    /* cleaner bullets */
+  margin: 0.40rem 0;               /* consistent spacing between blocks */
+  padding-left: 1.15rem;           /* list indent (paragraphs ignore it) */
 }
-
-/* List items: keep tight and aligned */
-.bubble-user li,
-.bubble-assistant li {
-  margin: 0.18rem 0;
-  padding-left: 0;
-}
-
 
 /* List items (including nested) */
 .bubble-user li,
