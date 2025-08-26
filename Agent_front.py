@@ -181,6 +181,30 @@ st.markdown("""
   }
 }
 
+/* Streamlit chat markdown: normalize paragraph + list indentation */
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] p {
+  margin: 0.40rem 0 !important;
+  padding-left: 0 !important;                /* no paragraph indent */
+}
+
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] ul,
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] ol {
+  margin: 0.40rem 0 !important;
+  padding-left: 1.15rem !important;          /* list indent only */
+  list-style-position: inside !important;     /* keeps wrapped lines aligned */
+}
+
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] li {
+  margin: 0.18rem 0 !important;
+  padding-left: 0 !important;
+}
+
+/* nested lists */
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] ul ul,
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] ol ol {
+  margin: 0.25rem 0 !important;
+  padding-left: 1.15rem !important;
+}
 
 
 /* Tiny hint on top-left */
