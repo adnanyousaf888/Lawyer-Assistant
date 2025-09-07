@@ -5,7 +5,7 @@
 # # ----------------------------- #
 # # Config
 # # ----------------------------- #
-# DEFAULT_API_URL = "https://agentx123.app.n8n.cloud/webhook/23ee85b0-c920-490b-8f47-6a6d3f24db90/chat"
+# DEFAULT_API_URL = "https://megartron.app.n8n.cloud/webhook/23ee85b0-c920-490b-8f47-6a6d3f24db90/chat"
 # APP_TITLE = "IBT Smart Wakeel"
 
 # st.set_page_config(
@@ -1302,3 +1302,4 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
