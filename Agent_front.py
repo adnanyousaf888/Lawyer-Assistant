@@ -237,6 +237,17 @@ st.markdown("""
   margin: 0.15rem 0;        /* tighter vertical spacing */
   line-height: 1.45;        /* clean readable lines */
 }
+/* Tighter paragraphs for assistant replies */
+.bubble-assistant p {
+  margin: 0.2rem 0;        /* less top/bottom space */
+  line-height: 1.4;        /* more compact but readable */
+}
+
+/* Keep lists compact too */
+.bubble-assistant li {
+  margin: 0.15rem 0;
+  line-height: 1.4;
+}
 
 .smallhint { position:fixed; top:8px; left:12px; opacity:.6; font-size:.85rem; z-index:9999; }
 .footer { opacity:.6; font-size:.8rem; margin: 12px auto; text-align:center; max-width: 840px; }
@@ -536,6 +547,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
