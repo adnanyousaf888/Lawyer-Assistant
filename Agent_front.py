@@ -151,6 +151,17 @@ st.markdown("""
     color: #9aa4b2 !important;
   }
 }
+/* Always show a visible caret (cursor) */
+[data-testid="stChatInput"] textarea {
+  caret-color: #3b82f6 !important;   /* bright blue cursor */
+}
+
+/* Optional: different cursor color in dark mode */
+@media (prefers-color-scheme: dark) {
+  [data-testid="stChatInput"] textarea {
+    caret-color: #ffffff !important; /* white cursor in dark mode */
+  }
+}
 
 /* ------- Mobile / touch: hide tiles ------- */
 @media (max-width: 1024px), (hover: none) and (pointer: coarse){
@@ -472,6 +483,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
