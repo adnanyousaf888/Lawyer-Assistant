@@ -395,10 +395,11 @@ if (not ss.hide_chips) and (len(ss.history) == 0):
         start_interaction(sel)
 
     # Optional: keep tiles for desktop (they're auto-hidden on mobile by CSS)
-     chips = [("📘", examples[0]), ("⚖️", examples[1]), ("✉️", examples[2]),
+    chips = [("📘", examples[0]), ("⚖️", examples[1]), ("✉️", examples[2]),
              ("🧾", examples[3]), ("🧾", examples[4]), ("📌", examples[5]),
              ("💼", examples[6]), ("💰", examples[7]), ("📄", examples[8])]
-     render_centered_chips(chips, per_row=3)
+    render_centered_chips(chips, per_row=3)
+
 
 
 
@@ -470,6 +471,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
