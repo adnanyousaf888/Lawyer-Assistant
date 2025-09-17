@@ -151,6 +151,26 @@ st.markdown("""
     color: #9aa4b2 !important;
   }
 }
+
+/* ------- Mobile tweaks ------- */
+@media (max-width: 540px){
+  .maxw{ max-width: 96vw; }
+  .hero-title{ font-size: 1.55rem; }
+  .hero-subtle{ font-size: .90rem; }
+  #chipbar{ display: none !important; }      /* hide tiles on phones */
+  .smallhint{ display: none; }
+
+  /* make bubbles full width on mobile */
+  .bubble-user, .bubble-assistant{
+    margin: 6px 0 !important;
+    border-radius: 12px !important;
+    padding: 9px 12px !important;
+    font-size: .95rem !important;
+  }
+  .bubble-user{ margin-left: 0 !important; }
+  .bubble-assistant{ margin-right: 0 !important; }
+}
+
 .smallhint { position:fixed; top:8px; left:12px; opacity:.6; font-size:.85rem; z-index:9999; }
 .footer { opacity:.6; font-size:.8rem; margin: 12px auto; text-align:center; max-width: 840px; }
 </style>
@@ -326,22 +346,42 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+
+
 # ----------------------------- #
-# Chips
+# Quick examples (mobile gets dropdown; desktop keeps tiles)
 # ----------------------------- #
 if (not ss.hide_chips) and (len(ss.history) == 0):
-    chips = [
-        ("📘", "Summarize Section 302 PPC in simple words."),
-        ("⚖️", "What is the punishment for theft under Pakistani law?"),
-        ("✉️", "Draft a polite legal notice about late rent."),
-        ("🧾", "Summarize a court judgment into bullet points."),
-        ("🧾", "Explain key amendments in Income Tax Ordinance 2001."),
-        ("📌", "What is the procedure to file an FIR in Pakistan (CrPC 1898)."),
-        ("💼", "How to register a Private Ltd company (Companies Act 2017)?"),
-        ("💰", "Tell me the Latest changes in Income Tax Ordinance 2001."),
-        ("📄", "Create a basic NDA for a freelance project.")
+    examples = [
+        "Summarize Section 302 PPC in simple words.",
+        "What is the punishment for theft under Pakistani law?",
+        "Draft a polite legal notice about late rent.",
+        "Summarize a court judgment into bullet points.",
+        "Explain key amendments in Income Tax Ordinance 2001.",
+        "What is the procedure to file an FIR in Pakistan (CrPC 1898).",
+        "How to register a Private Ltd company (Companies Act 2017)?",
+        "Tell me the Latest changes in Income Tax Ordinance 2001.",
+        "Create a basic NDA for a freelance project."
     ]
+
+    # Mobile-first: small, single control
+    sel = st.selectbox(
+        "Quick Ask",
+        ["Try an example…"] + examples,
+        index=0,
+        label_visibility="collapsed",
+    )
+    if sel != "Try an example…":
+        start_interaction(sel)
+
+    # Optional: keep tiles for desktop (they're auto-hidden on mobile by CSS)
+    chips = [("📘", examples[0]), ("⚖️", examples[1]), ("✉️", examples[2]),
+             ("🧾", examples[3]), ("🧾", examples[4]), ("📌", examples[5]),
+             ("💼", examples[6]), ("💰", examples[7]), ("📄", examples[8])]
     render_centered_chips(chips, per_row=3)
+
+
+
 
 # ----------------------------- #
 # History
@@ -352,7 +392,7 @@ for m in ss.history:
 
 typing_placeholder = st.empty()
 if ss.pending_prompt or ss.busy:
-    typing_placeholder.markdown("<div class='typing'>Wakeel is thinking for you…<hinking>", unsafe_allow_html=True)
+    typing_placeholder.markdown("<div class='typing'>Wakeel is thinking for you…</div>", unsafe_allow_html=True)
     scroll_to_bottom()
 
 # ----------------------------- #
@@ -410,5 +450,6 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
