@@ -184,6 +184,39 @@ st.markdown("""
   .bubble-assistant{ margin-right: 0 !important; }
 }
 
+/* ===== Legal-style formatting for assistant replies ===== */
+.bubble-assistant{
+  text-align: justify;          /* formal doc look */
+  font-size: 0.95rem;
+  line-height: 1.55;            /* easier reading */
+}
+
+.bubble-assistant ul,
+.bubble-assistant ol{
+  padding-left: 1.8rem;         /* deeper indent */
+  margin: 0.6rem 0;             /* spacing above/below list */
+}
+
+.bubble-assistant li{
+  margin: 0.35rem 0;            /* space between bullets */
+}
+
+/* sub-clauses like a), b), c) */
+.bubble-assistant ul ul,
+.bubble-assistant ol ol{
+  padding-left: 1.5rem;
+  margin: 0.3rem 0;
+  list-style-type: lower-alpha;
+}
+
+/* headings inside replies (when you use **bold**) */
+.bubble-assistant strong{
+  display: block;
+  margin: 0.5rem 0 0.2rem 0;
+  font-weight: 600;
+  text-decoration: underline;
+}
+/* ===== End legal-style formatting ===== */
 
 .smallhint { position:fixed; top:8px; left:12px; opacity:.6; font-size:.85rem; z-index:9999; }
 .footer { opacity:.6; font-size:.8rem; margin: 12px auto; text-align:center; max-width: 840px; }
@@ -483,6 +516,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
