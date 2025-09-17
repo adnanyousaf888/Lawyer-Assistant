@@ -351,7 +351,7 @@ st.markdown("<div class='smallhint'>Use the ▸ in the top-left to open <b>Contr
 with st.sidebar:
     st.header("Controls")
     #st.caption("Your n8n Chat Webhook must end with `/chat` and the workflow should use **Using Response Nodes**.")
-    st.text_input("API URL", value=ss.api_url, key="api_url_input"); ss.api_url = ss.api_url_input
+    #st.text_input("API URL", value=ss.api_url, key="api_url_input"); ss.api_url = ss.api_url_input
     c1, c2 = st.columns(2)
     with c1:
         if st.button("🧹 Clear chat", use_container_width=True):
@@ -472,6 +472,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
