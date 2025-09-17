@@ -152,15 +152,17 @@ st.markdown("""
   }
 }
 
-/* ------- Mobile tweaks ------- */
-@media (max-width: 540px){
+/* ------- Mobile / touch: hide tiles ------- */
+@media (max-width: 1024px), (hover: none) and (pointer: coarse){
+  #chipbar{ 
+    display: none !important; 
+    height: 0 !important; 
+    overflow: hidden !important; 
+  }
   .maxw{ max-width: 96vw; }
   .hero-title{ font-size: 1.55rem; }
   .hero-subtle{ font-size: .90rem; }
-  #chipbar{ display: none !important; }      /* hide tiles on phones */
   .smallhint{ display: none; }
-
-  /* make bubbles full width on mobile */
   .bubble-user, .bubble-assistant{
     margin: 6px 0 !important;
     border-radius: 12px !important;
@@ -170,6 +172,7 @@ st.markdown("""
   .bubble-user{ margin-left: 0 !important; }
   .bubble-assistant{ margin-right: 0 !important; }
 }
+
 
 .smallhint { position:fixed; top:8px; left:12px; opacity:.6; font-size:.85rem; z-index:9999; }
 .footer { opacity:.6; font-size:.8rem; margin: 12px auto; text-align:center; max-width: 840px; }
@@ -450,6 +453,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
