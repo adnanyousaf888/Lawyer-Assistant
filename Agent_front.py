@@ -226,6 +226,7 @@ def clean_text(s: str) -> str:
     s = s.replace("&nbsp;", " ").replace("\r", "\n")
     s = re.sub(r"\n{2,}", "\n\n", s)
     s = re.sub(r"[ \t]{2,}", " ", s)
+    s = re.sub(r"https?://\S+", "", s)            # 🔹 remove any http/https links
     return s.strip()
 
 def post_to_n8n(message: str) -> requests.Response:
@@ -471,6 +472,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
