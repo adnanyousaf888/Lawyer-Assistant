@@ -391,7 +391,7 @@ if (not ss.hide_chips) and (len(ss.history) == 0):
         index=0,
         label_visibility="collapsed",
     )
-    if sel != "Try an example…":
+    if sel != "Quick Legal Help…":
         start_interaction(sel)
 
     # Optional: keep tiles for desktop (they're auto-hidden on mobile by CSS)
