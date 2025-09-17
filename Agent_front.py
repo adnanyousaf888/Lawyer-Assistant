@@ -179,6 +179,23 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+
+st.markdown("""
+<script>
+function setMobileFlag(){
+  const isTouch = matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const isNarrow = window.innerWidth <= 1024;
+  if (isTouch || isNarrow) document.body.setAttribute('data-mobile','1');
+  else document.body.removeAttribute('data-mobile');
+}
+setMobileFlag();
+window.addEventListener('resize', setMobileFlag);
+</script>
+<style>
+body[data-mobile="1"] #chipbar{ display:none !important; height:0 !important; overflow:hidden !important; }
+</style>
+""", unsafe_allow_html=True)
+
 # ----------------------------- #
 # State
 # ----------------------------- #
@@ -453,6 +470,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
