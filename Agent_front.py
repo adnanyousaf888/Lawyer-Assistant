@@ -387,7 +387,7 @@ if (not ss.hide_chips) and (len(ss.history) == 0):
     # Mobile-first: small, single control
     sel = st.selectbox(
         "Quick Ask",
-        ["Try an example…"] + examples,
+        ["Quick Legal Help…"] + examples,
         index=0,
         label_visibility="collapsed",
     )
@@ -471,6 +471,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
