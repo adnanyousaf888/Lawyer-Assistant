@@ -378,15 +378,14 @@ def _hard_scroll_now():
         """
         <script>
         (function(){
-          const NEAR = 240;
-          const doc = document.scrollingElement || document.documentElement;
-          const near = (doc.scrollHeight - (doc.scrollTop + window.innerHeight)) <= NEAR;
-          if (near) { doc.scrollTop = doc.scrollHeight; }
+          const el = document.getElementById('chat-bottom');
+          if (el) el.scrollIntoView({behavior:'smooth', block:'end'});
         })();
         </script>
         """,
         unsafe_allow_html=True,
     )
+
 
 # ----------------------------- #
 # Interaction + UI
@@ -516,23 +515,27 @@ if ss.pending_prompt and not ss.busy:
                 else: reply = clean_text(resp.text)
         except Exception: reply = "Sorry, I couldn't reach the server."
 
-    # --- Word-by-word effect ---
+    # --- Word-by-word effect (mobile friendly) ---
     typing_placeholder.empty()
     animated_placeholder = st.empty()
     bottom_anchor = st.empty()
     partial = ""
+
     for i, chunk in enumerate(re.split(r'(\s+)', reply)):
         partial += chunk
         animated_placeholder.markdown(
             f"<div class='bubble-wrap'><div class='bubble-assistant'>{clean_text(partial)}</div></div>",
             unsafe_allow_html=True
         )
-        if i % 6 == 0:
-            bottom_anchor.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
-            _hard_scroll_now()
-        time.sleep(0.02)
+        # Always refresh anchor and scroll smoothly (better sync on mobile)
+        bottom_anchor.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
+        _hard_scroll_now()
+        time.sleep(0.03)  # slightly slower for DOM paint on mobile
+
+    # Final nudge to bottom after loop
     bottom_anchor.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
     _hard_scroll_now()
+
     # --- End typing ---
 
     add_msg("assistant", reply)
@@ -547,6 +550,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
