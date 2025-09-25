@@ -17,40 +17,7 @@ st.set_page_config(
 )
 
 
-# 🔒 Remove header icons (Share/Star/Edit/GitHub), hamburger, and "Manage app"
-st.markdown("""
-<style>
-/* Nuke the whole header (removes hamburger + all right-side icons) */
-header[data-testid="stHeader"] { 
-  display: none !important;
-}
 
-/* Reduce the top gap since header is gone */
-.block-container { 
-  padding-top: 0.6rem !important;
-}
-
-/* Hide Streamlit Cloud badges / Manage app widget (bottom-right) */
-[class*="viewerBadge"],
-[data-testid="stStatusWidget"],
-#stDecoration {
-  display: none !important;
-}
-</style>
-
-<script>
-// Safety sweep in case Cloud renders slightly differently
-const sweep = () => {
-  // Header leftovers
-  document.querySelectorAll('header, [data-testid="stHeader"]').forEach(el => el.style.display = "none");
-  // Manage app / viewer badges
-  document.querySelectorAll('[class*="viewerBadge"], [data-testid="stStatusWidget"], #stDecoration')
-    .forEach(el => el.style.display = "none");
-};
-new MutationObserver(sweep).observe(document.body, {subtree:true, childList:true});
-window.addEventListener('load', sweep);
-</script>
-""", unsafe_allow_html=True)
 
 
 
@@ -819,6 +786,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
