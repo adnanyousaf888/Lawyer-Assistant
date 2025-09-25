@@ -16,38 +16,41 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Keep header + hamburger; hide GitHub/Share/Star/Pencil + "Manage app"
+# 🔒 Remove header icons (Share/Star/Edit/GitHub), hamburger, and "Manage app"
 st.markdown("""
 <style>
-/* Keep the header visible, but remove the right-side action icons */
-header [data-testid="stHeaderActionElements"] { display: none !important; }
+/* Nuke the whole header (removes hamburger + all right-side icons) */
+header[data-testid="stHeader"] { 
+  display: none !important;
+}
 
-/* Make sure the hamburger (sidebar toggle) is visible */
-header [data-testid="stSidebarNavToggle"] { display: flex !important; }
+/* Reduce the top gap since header is gone */
+.block-container { 
+  padding-top: 0.6rem !important;
+}
 
-/* Hide Streamlit Cloud badge / Manage app (most builds) */
-[class*="viewerBadge"] { display: none !important; }
+/* Hide Streamlit Cloud badges / Manage app widget (bottom-right) */
+[class*="viewerBadge"],
+[data-testid="stStatusWidget"],
+#stDecoration {
+  display: none !important;
+}
 </style>
 
 <script>
-(function(){
-  // Extra sweep to catch "Manage app" in variants
-  const hideManage = () => {
-    document.querySelectorAll('a, button, div, span').forEach(el => {
-      const txt = (el.textContent || el.getAttribute?.('aria-label') || "").trim();
-      if (/^manage app$/i.test(txt) || /manage app/i.test(txt)) {
-        const box = el.closest('[data-testid="stStatusWidget"]') 
-                 || el.closest('[class*="viewerBadge"]') 
-                 || el;
-        if (box) box.style.display = "none";
-      }
-    });
-  };
-  new MutationObserver(hideManage).observe(document.body, {subtree:true, childList:true});
-  window.addEventListener('load', hideManage);
-})();
+// Safety sweep in case Cloud renders slightly differently
+const sweep = () => {
+  // Header leftovers
+  document.querySelectorAll('header, [data-testid="stHeader"]').forEach(el => el.style.display = "none");
+  // Manage app / viewer badges
+  document.querySelectorAll('[class*="viewerBadge"], [data-testid="stStatusWidget"], #stDecoration')
+    .forEach(el => el.style.display = "none");
+};
+new MutationObserver(sweep).observe(document.body, {subtree:true, childList:true});
+window.addEventListener('load', sweep);
 </script>
 """, unsafe_allow_html=True)
+
 
 
 
@@ -586,6 +589,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
