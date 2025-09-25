@@ -307,6 +307,70 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Hide Streamlit Cloud badges/profile (more variants, incl. mobile) */
+[data-testid="stStatusWidget"],
+[class*="viewerBadge"], 
+[class*="stStatusWidget"], 
+#stDecoration,
+a[href*="streamlit.io"],
+a[href*="share.streamlit"],
+a[href*="cloud.streamlit"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Mobile-specific catch-all for tiny fixed widgets near bottom-right */
+@media (max-width: 768px) {
+  /* any small fixed element sitting in the bottom-right corner */
+  .stApp div, .stApp a, .stApp button {
+    /* we won't actually apply display:none here; JS below will do it precisely */
+  }
+}
+</style>
+
+<script>
+// Extra mobile sweep: hide small fixed widgets at bottom-right (avatar/crown)
+(function(){
+  function hideBRBadges(){
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const margin = 140; // distance from bottom-right corner considered "badge zone"
+
+    document.querySelectorAll('div, a, button, span, img').forEach(el => {
+      // skip chat input area entirely
+      if (el.closest('[data-testid="stChatInput"]')) return;
+
+      const cs = window.getComputedStyle(el);
+      if (cs.position !== 'fixed') return;
+
+      const rect = el.getBoundingClientRect();
+      const nearBottomRight = (vw - rect.right <= margin) && (vh - rect.bottom <= margin);
+      const verySmall = rect.width <= 140 && rect.height <= 140;
+
+      // Heuristics to catch avatar/crown without touching your UI
+      if (nearBottomRight && verySmall) {
+        // avoid hiding mobile browser UI overlays accidentally
+        el.style.display = 'none';
+      }
+
+      // Text/links fallbacks
+      const t = (el.textContent || '').trim();
+      const href = el.getAttribute && el.getAttribute('href');
+      if (/manage app/i.test(t)) el.style.display = 'none';
+      if (href && /streamlit\\.io|share\\.streamlit|cloud\\.streamlit/i.test(href)) el.style.display = 'none';
+    });
+  }
+
+  const obs = new MutationObserver(hideBRBadges);
+  obs.observe(document.body, {subtree:true, childList:true});
+  window.addEventListener('load', hideBRBadges);
+  window.addEventListener('resize', hideBRBadges);
+})();
+</script>
+""", unsafe_allow_html=True)
+
 # ======================= OVERRIDE BLOCK (added) =======================
 st.markdown("""
 <style>
@@ -656,6 +720,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
