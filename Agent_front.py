@@ -294,6 +294,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* 🔒 Hide bottom-right profile picture and Streamlit Cloud badge */
+[data-testid="stStatusWidget"],
+[class*="viewerBadge_container"],
+[class*="stStatusWidget"],
+#stDecoration {
+    display: none !important;
+    visibility: hidden !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ======================= OVERRIDE BLOCK (added) =======================
 st.markdown("""
@@ -644,6 +656,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
