@@ -290,8 +290,6 @@ st.markdown("""
 
 
 # --- Light/Dark mode bubble fix ---
-st.markdown("""
-<style>
 /* --- User message bubble fix for light mode --- */
 .bubble-user {
   background: #e0f2fe !important;   /* light sky blue */
@@ -622,6 +620,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
