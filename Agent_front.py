@@ -425,6 +425,68 @@ a[href*="cloud.streamlit"] {
 """, unsafe_allow_html=True)
 
 
+st.markdown("""
+<style>
+/* 1) Hide common Streamlit badge iframes outright */
+iframe[src*="streamlit"], 
+iframe[src*="viewer-badge"], 
+iframe[src*="badge"], 
+iframe[title*="streamlit"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* 2) Mobile: be extra strict */
+@media (max-width: 768px) {
+  iframe {
+    /* allow JS sweeper to decide; CSS above catches known cases */
+  }
+}
+</style>
+
+<script>
+// Sweep bottom-right for small fixed widgets, including IFRAMES (mobile variant)
+(function(){
+  function hideBRBadges(){
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    const margin = 180;   // badge zone from bottom-right corner
+    const maxSize = 180;  // typical badge/avatar footprint
+
+    document.querySelectorAll('iframe, img, a, div, button, span').forEach(el => {
+      if (el.closest && el.closest('[data-testid="stChatInput"]')) return;
+
+      const tag = el.tagName.toLowerCase();
+      const src = (tag === 'iframe') ? (el.getAttribute('src') || '') : '';
+
+      if (/streamlit|viewer-badge|badge/i.test(src)) {
+        el.style.display = 'none';
+        return;
+      }
+
+      const cs = window.getComputedStyle(el);
+      if (cs.position !== 'fixed') return;
+
+      const r = el.getBoundingClientRect();
+      const nearBR = (vw - r.right <= margin) && (vh - r.bottom <= margin);
+      const small  = (r.width <= maxSize && r.height <= maxSize);
+
+      if (nearBR && small) {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  const obs = new MutationObserver(hideBRBadges);
+  obs.observe(document.body, {subtree:true, childList:true});
+  window.addEventListener('load', hideBRBadges);
+  window.addEventListener('resize', hideBRBadges);
+})();
+</script>
+""", unsafe_allow_html=True)
+
+
+
 
 st.markdown("""
 <script>
@@ -721,6 +783,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
