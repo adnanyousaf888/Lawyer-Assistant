@@ -16,6 +16,26 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+st.markdown("""
+<style>
+/* 1) Hide pencil, star, share, GitHub, and all header action icons */
+header [data-testid="stHeaderActionElements"] {
+    display: none !important;
+}
+
+/* 2) Hide hamburger (sidebar toggle) */
+header [data-testid="stSidebarNavToggle"] {
+    display: none !important;
+}
+
+/* 3) Hide "Manage app" in bottom-right */
+[class*="viewerBadge"], [data-testid="stStatusWidget"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 # ----------------------------- #
 # Global styles (centered layout, compact bubbles, fixed chat input)
 # ----------------------------- #
@@ -550,6 +570,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
