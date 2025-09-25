@@ -288,6 +288,42 @@ st.markdown("""
   line-height: 1.4;
 }
 
+
+# --- Light/Dark mode bubble fix ---
+st.markdown("""
+<style>
+/* --- User message bubble fix for light mode --- */
+.bubble-user {
+  background: #e0f2fe !important;   /* light sky blue */
+  color: #0f172a !important;        /* very dark navy text */
+  border: 1px solid #38bdf8 !important; /* cyan-400 border */
+}
+
+/* Assistant bubble (optional tweak for better contrast) */
+.bubble-assistant {
+  background: #f8fafc !important;   /* near white */
+  color: #111827 !important;        /* dark slate text */
+  border: 1px solid #e2e8f0 !important; /* light gray border */
+}
+
+/* --- Dark mode keep your old colors --- */
+@media (prefers-color-scheme: dark) {
+  .bubble-user {
+    background: rgba(59,130,246,.18) !important;
+    color: #d6e9ff !important;
+    border: 1px solid rgba(59,130,246,.25) !important;
+  }
+  .bubble-assistant {
+    background: rgba(255,255,255,.08) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+  }
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 .smallhint { position:fixed; top:8px; left:12px; opacity:.6; font-size:.85rem; z-index:9999; }
 .footer { opacity:.6; font-size:.8rem; margin: 12px auto; text-align:center; max-width: 840px; }
 </style>
@@ -589,6 +625,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
