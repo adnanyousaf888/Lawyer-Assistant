@@ -168,6 +168,16 @@ st.markdown("""
     caret-color: #ffffff !important; /* white cursor in dark mode */
   }
 }
+/* Kill smooth-Scroll jank and wheel bounce */
+html, body { scroll-behavior: auto !important; }
+.stApp { overscroll-behavior: contain; }
+
+/* Avoid layout thrash inside each message */
+.bubble-wrap { contain: layout paint; }
+
+/* Tell the browser to keep the bottom in view (helps anchoring) */
+#chat-bottom { min-height: 1px; }
+
 
 /* ------- Mobile / touch: hide tiles ------- */
 @media (max-width: 1024px), (hover: none) and (pointer: coarse){
@@ -519,6 +529,20 @@ def export_markdown() -> str:
         lines.append(f"**{who} ({m['ts']})**\n\n{m['content']}\n")
     return "\n".join(lines)
 
+
+st.markdown("""
+<script>
+window.WAKEEL = window.WAKEEL || {};
+window.WAKEEL.scrollIfNearBottom = function(){
+  const NEAR = 300;
+  const doc = document.scrollingElement || document.documentElement;
+  const dist = doc.scrollHeight - (doc.scrollTop + window.innerHeight);
+  if (dist <= NEAR) doc.scrollTop = doc.scrollHeight; // instant, no smooth
+};
+</script>
+""", unsafe_allow_html=True)
+
+
 # --- Stable scroll script ---
 def scroll_to_bottom():
     st.markdown(
@@ -716,25 +740,36 @@ if ss.pending_prompt and not ss.busy:
         except Exception: reply = "Sorry, I couldn't reach the server."
 
     # --- Word-by-word effect (mobile friendly) ---
-    typing_placeholder.empty()
-    animated_placeholder = st.empty()
-    bottom_anchor = st.empty()
-    partial = ""
+typing_placeholder.empty()
+animated_placeholder = st.empty()
+bottom_anchor = st.empty()
+partial = ""
 
-    for i, chunk in enumerate(re.split(r'(\s+)', reply)):
-        partial += chunk
+BATCH = 6        # update UI every 6 chunks instead of every chunk
+PAUSE = 0.02     # gentler pace
+
+for i, chunk in enumerate(re.split(r'(\s+)', reply)):
+    partial += chunk
+    if i % BATCH == 0 or i == 0:
+        # Update the bubble less often (reduces layout churn)
         animated_placeholder.markdown(
             f"<div class='bubble-wrap'><div class='bubble-assistant'>{clean_text(partial)}</div></div>",
             unsafe_allow_html=True
         )
-        # Always refresh anchor and scroll smoothly (better sync on mobile)
+        # Keep the anchor refreshed
         bottom_anchor.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
-        _hard_scroll_now()
-        time.sleep(0.03)  # slightly slower for DOM paint on mobile
+        # Only scroll if the user is already near the bottom; instant (no smooth)
+        st.markdown("<script>window.WAKEEL.scrollIfNearBottom()</script>", unsafe_allow_html=True)
+        time.sleep(PAUSE)
 
-    # Final nudge to bottom after loop
-    bottom_anchor.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
-    _hard_scroll_now()
+# One final render at the end (ensures full text shows)
+animated_placeholder.markdown(
+    f"<div class='bubble-wrap'><div class='bubble-assistant'>{clean_text(partial)}</div></div>",
+    unsafe_allow_html=True
+)
+bottom_anchor.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
+st.markdown("<script>window.WAKEEL.scrollIfNearBottom()</script>", unsafe_allow_html=True)
+
 
     # --- End typing ---
 
@@ -750,6 +785,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
