@@ -16,24 +16,54 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# Hide GitHub, Share, Star, Pencil(Edit), Hamburger, and Manage app
 st.markdown("""
 <style>
-/* 1) Hide pencil, star, share, GitHub, and all header action icons */
-header [data-testid="stHeaderActionElements"] {
-    display: none !important;
+/* --- Header action icons (Share/Star/Edit etc.) --- */
+header [data-testid="stHeaderActionElements"] { display:none !important; }
+
+/* Direct matches for common renderings */
+header button[title*="Share"],  header button[aria-label*="Share"],
+header button[title*="Star"],   header button[aria-label*="Star"],
+header button[title*="Edit"],   header button[aria-label*="Edit"] {
+  display:none !important;
 }
 
-/* 2) Hide hamburger (sidebar toggle) */
-header [data-testid="stSidebarNavToggle"] {
-    display: none !important;
+/* Hide any GitHub link in header */
+header a[href*="github.com"], header a[aria-label*="GitHub"] {
+  display:none !important;
 }
 
-/* 3) Hide "Manage app" in bottom-right */
-[class*="viewerBadge"], [data-testid="stStatusWidget"] {
-    display: none !important;
+/* --- Hamburger (sidebar toggle) across versions --- */
+header [data-testid="stSidebarNavToggle"],
+header button[kind="headerMenu"],
+header [data-testid="baseButton-headerNoPadding"],
+header svg[data-testid="hamburger"] {
+  display:none !important;
+}
+
+/* --- Bottom-right Streamlit Cloud badges (“Manage app”, etc.) --- */
+[class*="viewerBadge"], [data-testid="stStatusWidget"], #stDecoration {
+  display:none !important;
 }
 </style>
+
+<script>
+// Safety net for variants: remove by text/labels and GitHub href
+const kill = () => {
+  document.querySelectorAll('header a, header button, [class*="viewerBadge"], [data-testid="stStatusWidget"]').forEach(el => {
+    const txt = (el.innerText || el.getAttribute('aria-label') || el.getAttribute('title') || '').trim();
+    const href = (el.getAttribute && el.getAttribute('href')) || '';
+    if (/^(Share|Star|Edit|Manage app)$/i.test(txt) || /github\\.com/i.test(href)) {
+      el.style.display = 'none';
+    }
+  });
+};
+new MutationObserver(kill).observe(document.body, {subtree:true, childList:true});
+window.addEventListener('load', kill);
+</script>
 """, unsafe_allow_html=True)
+
 
 
 # ----------------------------- #
@@ -570,6 +600,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
