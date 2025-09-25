@@ -319,9 +319,6 @@ st.markdown("""
     border: 1px solid rgba(255,255,255,.10) !important;
   }
 }
-</style>
-""", unsafe_allow_html=True)
-
 
 
 .smallhint { position:fixed; top:8px; left:12px; opacity:.6; font-size:.85rem; z-index:9999; }
@@ -625,6 +622,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
