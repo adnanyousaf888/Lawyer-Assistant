@@ -371,58 +371,6 @@ a[href*="cloud.streamlit"] {
 </script>
 """, unsafe_allow_html=True)
 
-# ======================= OVERRIDE BLOCK (added) =======================
-st.markdown("""
-<style>
-/* ---------- FIX: Quick Ask selectbox (light mode visibility) ---------- */
-[data-testid="stSelectbox"] div[role="combobox"]{
-  background: #e0f2fe !important;          /* soft light blue tile */
-  border: 1px solid #38bdf8 !important;    /* cyan border */
-  color: #0f172a !important;               /* dark text */
-  box-shadow: none !important;
-}
-[data-testid="stSelectbox"] input{
-  color: #0f172a !important;
-  -webkit-text-fill-color: #0f172a !important;
-  background: transparent !important;
-  font-size: 16px !important;              /* stop mobile auto-zoom */
-}
-[data-testid="stSelectbox"] input::placeholder{
-  color: #475569 !important;               /* slate-600 */
-  opacity: 1 !important;
-}
-[data-testid="stSelectbox"] svg{
-  color: #0f172a !important;
-  fill: #0f172a !important;
-}
-
-/* User/Assistant bubbles – light mode contrast */
-.bubble-user{ background:#e0f2fe !important; color:#0f172a !important; border:1px solid #38bdf8 !important; }
-.bubble-assistant{ background:#f8fafc !important; color:#111827 !important; border:1px solid #e2e8f0 !important; }
-
-/* Preserve dark-mode look */
-@media (prefers-color-scheme: dark){
-  [data-testid="stSelectbox"] div[role="combobox"]{
-    background: rgba(255,255,255,.06) !important;
-    border: 1px solid rgba(255,255,255,.12) !important;
-    color: #e5e7eb !important;
-  }
-  [data-testid="stSelectbox"] input{
-    color: #e5e7eb !important;
-    -webkit-text-fill-color: #e5e7eb !important;
-  }
-  [data-testid="stSelectbox"] input::placeholder{
-    color: #9aa4b2 !important;
-  }
-  [data-testid="stSelectbox"] svg{
-    color: #e5e7eb !important; fill: #e5e7eb !important;
-  }
-  .bubble-user{ background:rgba(59,130,246,.18) !important; color:#d6e9ff !important; border:1px solid rgba(59,130,246,.25) !important; }
-  .bubble-assistant{ background:rgba(255,255,255,.08) !important; color:#ffffff !important; border:1px solid rgba(255,255,255,.10) !important; }
-}
-</style>
-""", unsafe_allow_html=True)
-# ===================== END OVERRIDE BLOCK (added) =====================
 
 
 st.markdown("""
@@ -720,6 +668,7 @@ if text and not ss.busy and not ss.pending_prompt: start_interaction(text)
 
 st.markdown("<div id='chat-bottom'></div>", unsafe_allow_html=True)
 if ss.history: scroll_to_bottom()
+
 
 
 
